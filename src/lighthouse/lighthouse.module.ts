@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Run } from './entities/run.entity';
 import { Target } from './entities/target.entity';
 import { LighthouseService } from './lighthouse.service';
+import { RunResolver } from './resolvers/run.resolver';
+import { TargetResolver } from './resolvers/target.resolver';
 
 @Module({
 	imports: [TypeOrmModule.forFeature([
@@ -11,6 +13,6 @@ import { LighthouseService } from './lighthouse.service';
 		Target
 	])],
 	exports: [TypeOrmModule],
-	providers: [LighthouseService]
+	providers: [LighthouseService, TargetResolver, RunResolver]
 })
 export class LighthouseModule {}

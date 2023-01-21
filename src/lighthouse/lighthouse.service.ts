@@ -19,9 +19,8 @@ export class LighthouseService {
 	}
 
 	private async scheduleNextRun() {
-		console.log('Scheduling next run');
 		setTimeout(() => {
-			this.doRun();
+			// this.doRun();
 		}, 5_000);
 	}
 
@@ -30,7 +29,7 @@ export class LighthouseService {
 			const target = await this.getNextTarget();
 
 			const browser = await puppeteer.launch({
-				headless: false,
+				headless: true,
 				defaultViewport: null,
 			});
 
@@ -49,14 +48,11 @@ export class LighthouseService {
 			switch (true) {
 				case err instanceof EntityNotFoundError: {
 					// Handle missing target error
-					console.log(
-						"Couldn't find any targets. Skipping process and scheduling next run.",
-					);
 					break;
 				}
 				default: {
 					// Handle unknown error
-					console.log(err);
+					console.error(err);
 					break;
 				}
 			}
@@ -71,9 +67,11 @@ export class LighthouseService {
 	) {
 		const newRun = new Run();
 
+		// Save some metadata from the run
 		newRun.lighthouse_version = report.lighthouseVersion;
-		newRun.url = target.url;
 		newRun.user_agent = report.userAgent;
+
+		// Save all the relevant reporting metrics
 		newRun.first_contentful_paint =
 			report.audits['first-contentful-paint'].numericValue;
 		newRun.largest_contentful_paint =
@@ -101,18 +99,26 @@ export class LighthouseService {
 			report.audits['total-byte-weight'].numericValue;
 		newRun.dom_nodes = report.audits['dom-size'].numericValue;
 
+		// Construct the Run <-> Target relation
+		newRun.target = target;
+
 		await this.runRepository.save(newRun);
 	}
 
 	private async touchTarget(target: Target) {
-		target.num_runs--;
+		if (target.num_runs > 0) {
+			target.num_runs--;
+		} else {
+			// Target is infinite; don't reduce run count
+		}
+
 		await this.targetRepository.save(target);
 	}
 
 	private async getNextTarget(): Promise<Target> {
 		const nextTarget = await this.targetRepository
 			.createQueryBuilder()
-			.where('num_runs > 0')
+			.where('num_runs <> 0')
 			.orderBy('updated_at', 'ASC')
 			.getOneOrFail();
 
