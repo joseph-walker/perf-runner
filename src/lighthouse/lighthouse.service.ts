@@ -20,7 +20,7 @@ export class LighthouseService {
 
 	private async scheduleNextRun() {
 		setTimeout(() => {
-			// this.doRun();
+			this.doRun();
 		}, 5_000);
 	}
 
