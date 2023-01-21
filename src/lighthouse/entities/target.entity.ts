@@ -6,10 +6,12 @@ import {
 	CreateDateColumn,
 	UpdateDateColumn,
 	OneToMany,
+	ManyToOne,
 } from 'typeorm';
 
 import { Run } from './run.entity';
 import { TargetStatistics } from '../models/target-statistics.model';
+import { Device } from './device.entity';
 
 @ObjectType()
 @Entity('targets')
@@ -37,6 +39,9 @@ export class Target {
 	@Field((type) => [Run])
 	@OneToMany(() => Run, (run) => run.target)
 	runs: Run[];
+
+	@ManyToOne(() => Device, (device) => device.targets)
+	device: Device
 
 	@Field((type) => TargetStatistics)
 	statistics: TargetStatistics

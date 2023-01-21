@@ -33,6 +33,10 @@ export class Run {
 	@Column()
 	user_agent: string;
 
+	@Field(() => Float)
+	@Column('float')
+	final_score: number;
+
 	@Field((type) => Float)
 	@Column('float')
 	first_contentful_paint: number;
@@ -43,7 +47,7 @@ export class Run {
 
 	@Field((type) => Float)
 	@Column('float')
-	first_meaningful_aint: number;
+	first_meaningful_paint: number;
 
 	@Field((type) => Float)
 	@Column('float')
