@@ -23,7 +23,7 @@ export class LighthouseService {
 	private async scheduleNextRun() {
 		setTimeout(() => {
 			this.doRun();
-		}, 5_000);
+		}, 30_000);
 	}
 
 	private async doRun() {
@@ -31,7 +31,7 @@ export class LighthouseService {
 			const target = await this.getNextTarget();
 
 			const browser = await puppeteer.launch({
-				headless: false,
+				headless: true,
 				defaultViewport: null,
 			});
 
@@ -154,7 +154,7 @@ export class LighthouseService {
 			.createQueryBuilder("target")
 			.leftJoinAndSelect("target.device", "device")
 			.where('target.num_runs <> 0')
-			.orderBy('updated_at', 'ASC')
+			.orderBy('target.updated_at', 'ASC')
 			.getOneOrFail();
 
 		return nextTarget;

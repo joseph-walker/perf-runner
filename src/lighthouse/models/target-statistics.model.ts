@@ -26,4 +26,16 @@ export class TargetStatistics {
 			mean,
 		};
 	}
+
+	@Field((type) => Statistic)
+	get final_score(): Statistic {
+		const mean =
+			this.runs
+				.map((run) => run.final_score)
+				.reduce((a, b) => a + b, 0) / this.runs.length;
+
+		return {
+			mean,
+		};
+	}
 }
