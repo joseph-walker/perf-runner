@@ -12,7 +12,7 @@ export class TargetStatistics {
 
 	@Field((type) => Int)
 	get count(): number {
-		return this.runs.length;
+		return this.runs.length ?? 0;
 	}
 
 	@Field((type) => Statistic)
@@ -23,7 +23,7 @@ export class TargetStatistics {
 				.reduce((a, b) => a + b, 0) / this.runs.length;
 
 		return {
-			mean,
+			mean: mean || 0,
 		};
 	}
 
@@ -35,7 +35,7 @@ export class TargetStatistics {
 				.reduce((a, b) => a + b, 0) / this.runs.length;
 
 		return {
-			mean,
+			mean: mean || 0,
 		};
 	}
 }
