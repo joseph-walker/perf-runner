@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, EntityNotFoundError, Repository } from 'typeorm';
-import lighthouse from 'lighthouse';
 import puppeteer from 'puppeteer';
 
 import { Target } from './entities/target.entity';
 import { Run } from './entities/run.entity';
 import { FormFactor } from './entities/device.entity';
+
+const lighthouseModule = import('lighthouse');
+
+type LHResult = Awaited<typeof lighthouseModule>["default"]
 
 @Injectable()
 export class LighthouseService {
@@ -28,6 +31,7 @@ export class LighthouseService {
 
 	private async doRun() {
 		try {
+			const lighthouse = (await lighthouseModule).default;
 			const target = await this.getNextTarget();
 
 			const browser = await puppeteer.launch({
@@ -79,7 +83,7 @@ export class LighthouseService {
 
 	private async saveRun(
 		target: Target,
-		report: Awaited<ReturnType<typeof lighthouse>>['lhr'],
+		report: Awaited<ReturnType<LHResult>>['lhr'],
 	) {
 		const newRun = new Run();
 
