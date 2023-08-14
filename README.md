@@ -17,8 +17,6 @@ No builds are set up and the script is run through `ts-node`. Run the following:
 
 ```bash
 npm run start
-# or
-npm run start:dev
 ```
 
 ## Steps for starting runs / How it works
