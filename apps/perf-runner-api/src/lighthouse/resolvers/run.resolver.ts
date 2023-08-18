@@ -1,11 +1,4 @@
-import {
-	Query,
-	Args,
-	Int,
-	Resolver,
-	ResolveField,
-	Parent,
-} from '@nestjs/graphql';
+import { Query, Args, Int, Resolver, ResolveField, Parent } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 

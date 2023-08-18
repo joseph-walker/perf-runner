@@ -1,11 +1,4 @@
-import {
-	Query,
-	Args,
-	Int,
-	Resolver,
-	ResolveField,
-	Parent,
-} from '@nestjs/graphql';
+import { Query, Args, Int, Resolver, ResolveField, Parent } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -22,7 +15,7 @@ export class TargetResolver {
 		@InjectRepository(Run)
 		private runRepository: Repository<Run>,
 		@InjectRepository(Device)
-		private deviceRepository: Repository<Device>
+		private deviceRepository: Repository<Device>,
 	) {}
 
 	@Query((returns) => Target)
@@ -40,7 +33,7 @@ export class TargetResolver {
 		return this.runRepository
 			.createQueryBuilder('run')
 			.leftJoinAndSelect('run.target', 'target')
-			.where("target.id = :id", { id: target.id })
+			.where('target.id = :id', { id: target.id })
 			.getMany();
 	}
 

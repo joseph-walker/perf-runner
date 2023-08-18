@@ -10,9 +10,9 @@ import { LighthouseModule } from './lighthouse/lighthouse.module';
 @Module({
 	imports: [
 		GraphQLModule.forRoot<ApolloDriverConfig>({
-		  driver: ApolloDriver,
-		  autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-		  sortSchema: true,
+			driver: ApolloDriver,
+			autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+			sortSchema: true,
 		}),
 		TypeOrmModule.forRoot({
 			type: 'postgres',
@@ -23,7 +23,7 @@ import { LighthouseModule } from './lighthouse/lighthouse.module';
 			password: 'lighthouse-root',
 			synchronize: true,
 			logging: true,
-			entities: ["./**/*.entity.js"],
+			entities: ['./**/*.entity.js'],
 			subscribers: [],
 			migrations: [],
 		}),

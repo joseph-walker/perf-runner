@@ -10,12 +10,8 @@ import { RunResolver } from './resolvers/run.resolver';
 import { TargetResolver } from './resolvers/target.resolver';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([
-		Run,
-		Target,
-		Device
-	])],
+	imports: [TypeOrmModule.forFeature([Run, Target, Device])],
 	exports: [TypeOrmModule],
-	providers: [LighthouseService, TargetResolver, RunResolver, DeviceResolver]
+	providers: [LighthouseService, TargetResolver, RunResolver, DeviceResolver],
 })
 export class LighthouseModule {}

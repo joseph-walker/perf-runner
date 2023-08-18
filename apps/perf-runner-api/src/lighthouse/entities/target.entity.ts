@@ -40,13 +40,13 @@ export class Target {
 	@OneToMany(() => Run, (run) => run.target)
 	runs: Run[];
 
-    @Column()
-    deviceId: number
+	@Column()
+	deviceId: number;
 
 	@Field((type) => Device)
 	@ManyToOne(() => Device, (device) => device.targets)
-	device: Device
+	device: Device;
 
 	@Field((type) => TargetStatistics)
-	statistics: TargetStatistics
+	statistics: TargetStatistics;
 }

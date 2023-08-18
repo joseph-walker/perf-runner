@@ -9,7 +9,7 @@ import { FormFactor } from './entities/device.entity';
 
 const lighthouseModule = import('lighthouse');
 
-type LHResult = Awaited<typeof lighthouseModule>["default"]
+type LHResult = Awaited<typeof lighthouseModule>['default'];
 
 @Injectable()
 export class LighthouseService {
@@ -50,14 +50,14 @@ export class LighthouseService {
 					requestLatencyMs: target.device.request_latency_ms,
 					downloadThroughputKbps: target.device.download_throughput_kbps,
 					uploadThroughputKbps: target.device.upload_throughput_kbps,
-					rttMs: target.device.round_trip_time_ms
+					rttMs: target.device.round_trip_time_ms,
 				},
 				screenEmulation: {
 					deviceScaleFactor: target.device.scale_factor,
 					width: target.device.screen_width,
 					height: target.device.screen_height,
-					mobile: target.device.form_factor === FormFactor.Mobile
-				}
+					mobile: target.device.form_factor === FormFactor.Mobile,
+				},
 			});
 
 			await browser.close();
@@ -81,10 +81,7 @@ export class LighthouseService {
 		}
 	}
 
-	private async saveRun(
-		target: Target,
-		report: Awaited<ReturnType<LHResult>>['lhr'],
-	) {
+	private async saveRun(target: Target, report: Awaited<ReturnType<LHResult>>['lhr']) {
 		const newRun = new Run();
 
 		// Save some metadata from the run
@@ -92,31 +89,21 @@ export class LighthouseService {
 		newRun.user_agent = report.userAgent;
 
 		// Save all the relevant reporting metrics
-		newRun.first_contentful_paint =
-			report.audits['first-contentful-paint'].numericValue;
-		newRun.largest_contentful_paint =
-			report.audits['largest-contentful-paint'].numericValue;
-		newRun.first_meaningful_paint =
-			report.audits['first-meaningful-paint'].numericValue;
+		newRun.first_contentful_paint = report.audits['first-contentful-paint'].numericValue;
+		newRun.largest_contentful_paint = report.audits['largest-contentful-paint'].numericValue;
+		newRun.first_meaningful_paint = report.audits['first-meaningful-paint'].numericValue;
 		newRun.speed_index = report.audits['speed-index'].numericValue;
-		newRun.total_blocking_time =
-			report.audits['total-blocking-time'].numericValue;
-		newRun.max_potential_fid =
-			report.audits['max-potential-fid'].numericValue;
-		newRun.cumulative_layout_shift =
-			report.audits['cumulative-layout-shift'].numericValue;
-		newRun.server_response_time =
-			report.audits['server-response-time'].numericValue;
+		newRun.total_blocking_time = report.audits['total-blocking-time'].numericValue;
+		newRun.max_potential_fid = report.audits['max-potential-fid'].numericValue;
+		newRun.cumulative_layout_shift = report.audits['cumulative-layout-shift'].numericValue;
+		newRun.server_response_time = report.audits['server-response-time'].numericValue;
 		newRun.time_to_interactive = report.audits['interactive'].numericValue;
 		newRun.redirects = report.audits['redirects'].numericValue;
-		newRun.main_thread_work =
-			report.audits['mainthread-work-breakdown'].numericValue;
+		newRun.main_thread_work = report.audits['mainthread-work-breakdown'].numericValue;
 		newRun.bootup_time = report.audits['bootup-time'].numericValue;
 		newRun.network_rtt = report.audits['network-rtt'].numericValue;
-		newRun.network_latency =
-			report.audits['network-server-latency'].numericValue;
-		newRun.total_byte_weight =
-			report.audits['total-byte-weight'].numericValue;
+		newRun.network_latency = report.audits['network-server-latency'].numericValue;
+		newRun.total_byte_weight = report.audits['total-byte-weight'].numericValue;
 		newRun.dom_nodes = report.audits['dom-size'].numericValue;
 		newRun.final_score = report.categories.performance.score;
 
@@ -135,7 +122,9 @@ export class LighthouseService {
 		await queryRunner.startTransaction();
 
 		try {
-			const target = await queryRunner.manager.findOneBy<Target>(Target, { id: targetRef.id });
+			const target = await queryRunner.manager.findOneBy<Target>(Target, {
+				id: targetRef.id,
+			});
 
 			if (target.num_runs > 0) {
 				target.num_runs--;
@@ -155,8 +144,8 @@ export class LighthouseService {
 
 	private async getNextTarget(): Promise<Target> {
 		const nextTarget = await this.targetRepository
-			.createQueryBuilder("target")
-			.leftJoinAndSelect("target.device", "device")
+			.createQueryBuilder('target')
+			.leftJoinAndSelect('target.device', 'device')
 			.where('target.num_runs <> 0')
 			.orderBy('target.updated_at', 'ASC')
 			.getOneOrFail();
