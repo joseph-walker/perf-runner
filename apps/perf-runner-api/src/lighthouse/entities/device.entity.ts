@@ -1,4 +1,4 @@
-import { Field, Float, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { InputType, Field, Float, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import {
 	Entity,
 	Column,
@@ -18,6 +18,12 @@ export enum FormFactor {
 registerEnumType(FormFactor, {
 	name: 'FormFactor',
 });
+
+@ObjectType()
+export class DeviceResult {
+	@Field((type) => Boolean)
+	ok: boolean;
+}
 
 @ObjectType()
 @Entity('devices')
@@ -76,4 +82,41 @@ export class Device {
 
 	@OneToMany(() => Target, (target) => target.device)
 	targets: Target[];
+}
+
+
+@InputType()
+export class DeviceInput {
+	@Field()
+	id?: number;
+
+	@Field()
+	name: string;
+
+	@Field((type) => FormFactor)
+	form_factor: FormFactor;
+
+	@Field((type) => Int)
+	screen_width: number;
+
+	@Field((type) => Int)
+	screen_height: number;
+
+	@Field((type) => Float)
+	scale_factor: number;
+
+	@Field((type) => Int)
+	cpu_slowdown_factor: number;
+
+	@Field((type) => Int)
+	request_latency_ms: number;
+
+	@Field((type) => Int)
+	round_trip_time_ms: number;
+
+	@Field((type) => Int)
+	download_throughput_kbps: number;
+
+	@Field((type) => Int)
+	upload_throughput_kbps: number;
 }

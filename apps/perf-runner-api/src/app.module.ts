@@ -22,7 +22,7 @@ import { LighthouseModule } from './lighthouse/lighthouse.module';
 			username: 'lighthouse',
 			password: 'lighthouse-root',
 			synchronize: true,
-			logging: true,
+			logging: false,
 			entities: ['./**/*.entity.js'],
 			subscribers: [],
 			migrations: [],

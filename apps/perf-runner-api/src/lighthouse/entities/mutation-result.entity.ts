@@ -1,23 +1,17 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import {
-	Column,
-	CreateDateColumn,
 	Entity,
-	ManyToOne,
-	OneToMany,
+	Column,
 	PrimaryGeneratedColumn,
+	CreateDateColumn,
 	UpdateDateColumn,
+	OneToMany,
+	ManyToOne,
 } from 'typeorm';
-import { TargetStatistics } from '../models/target-statistics.model';
-import { Device } from './device.entity';
 
 import { Run } from './run.entity';
-
-@ObjectType()
-export class TargetResult {
-	@Field((type) => Boolean)
-	ok: boolean;
-}
+import { TargetStatistics } from '../models/target-statistics.model';
+import { Device } from './device.entity';
 
 @ObjectType()
 @Entity('targets')

@@ -1,10 +1,11 @@
-import { Query, Args, Int, Resolver, ResolveField, Parent } from '@nestjs/graphql';
+import { Args, Int, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Mutation } from '@nestjs/graphql/dist/decorators/mutation.decorator';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Device } from '../entities/device.entity';
 import { Run } from '../entities/run.entity';
-import { Target } from '../entities/target.entity';
+import { Target, TargetResult } from '../entities/target.entity';
 import { TargetStatistics } from '../models/target-statistics.model';
 
 @Resolver((of) => Target)
@@ -47,5 +48,26 @@ export class TargetResolver {
 		// TODO: Requesting both statistics and runs will technically result in a double SELECT.
 		// Could probably cache this. But TBH who cares. Postgres is fast.
 		return new TargetStatistics(await this.runs(target));
+	}
+
+	@Mutation((returns) => TargetResult)
+	async createTarget(
+		@Args('numRuns') numRuns: number,
+		@Args('url') url: string,
+		@Args('deviceId', { type: () => Int }) deviceId: number,
+	) {
+		try {
+			await this.targetRepository.save({
+				url,
+				deviceId,
+				num_rums: numRuns,
+			});
+
+			return { ok: true };
+		} catch (e) {
+			console.error(e);
+
+			return { ok: false };
+		}
 	}
 }

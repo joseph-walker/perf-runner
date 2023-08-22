@@ -19,6 +19,11 @@ export class RunResolver {
 		return this.runRepository.findOne({ where: { id } });
 	}
 
+	@Query((returns) => [Run])
+	async runs() {
+		return this.runRepository.find();
+	}
+
 	@ResolveField()
 	async target(@Parent() run: Run) {
 		return this.targetRepository
