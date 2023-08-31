@@ -1,0 +1,15 @@
+@import '@fontsource/vt323';
+@import '@fontsource-variable/inter';
+
+@font-face {
+	font-family: 'Adjusted Courier New Fallback';
+	src: local(Courier New);
+	size-adjust: 67%;
+	ascent-override: 109%;
+	descent-override: normal;
+	line-gap-override: normal;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

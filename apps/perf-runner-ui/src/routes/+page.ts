@@ -1,12 +1,13 @@
 import { apolloClient } from '$lib/apollo-client';
 import { gql } from '@apollo/client/core';
 import { byUpdatedAt } from './devices/utils';
+import type { PageLoad } from './$types';
 
 // Page settings
 // ===========================
 export const csr = false;
 
-export const load = async () => {
+export const load: PageLoad = async () => {
 	const result = await apolloClient.query<{
 		runs: Array<{
 			bootup_time: number;

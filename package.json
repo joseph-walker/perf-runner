@@ -2,11 +2,11 @@
 	"name": "perf-monorepo",
 	"version": "1.0.0",
 	"scripts": {
-		"build": "npm exec turbo run build",
-		"dev": "npm exec turbo run dev",
-		"format": "npm exec turbo run format",
-		"lint": "npm exec turbo run lint",
-		"test": "npm exec turbo run test"
+		"build": "turbo run build",
+		"dev": "turbo run dev",
+		"format": "turbo run format",
+		"lint": "turbo run lint",
+		"test": "turbo run test"
 	},
 	"devDependencies": {
 		"turbo": "^1.10.12"
